@@ -1,5 +1,16 @@
 # Execute com ponto e espaco: . .\loja-maven\preparar-terminal.ps1
-$javaInfoLoja = & java -XshowSettings:properties -version 2>&1
+if (-not (Get-Command java -ErrorAction SilentlyContinue)) { throw 'Java nao encontrado. Instale um JDK 17 ou superior.' }
+# Java escreve as propriedades em stderr. O Windows PowerShell 5.1 transforma
+# essas linhas em ErrorRecord; capture-as sem interromper o ensaio com Stop.
+$preferenciaErroLoja = $ErrorActionPreference
+try {
+    $ErrorActionPreference = 'Continue'
+    $javaInfoLoja = & java -XshowSettings:properties -version 2>&1
+    $javaExitLoja = $LASTEXITCODE
+} finally {
+    $ErrorActionPreference = $preferenciaErroLoja
+}
+if ($javaExitLoja -ne 0) { throw 'Nao foi possivel executar o Java. Confira a instalacao do JDK.' }
 $javaHomeLinhaLoja = $javaInfoLoja | ForEach-Object { "$_" } | Where-Object { $_ -match '^\s*java.home\s*=' } | Select-Object -First 1
 if (-not $javaHomeLinhaLoja) { throw 'Java nao encontrado. Instale um JDK 17 ou superior.' }
 $jdkLoja = ($javaHomeLinhaLoja -split '=', 2)[1].Trim()
