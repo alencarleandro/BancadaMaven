@@ -4,7 +4,7 @@ Projeto didático para apresentar **sete funcionalidades de uma ferramenta de bu
 
 ## Começar
 
-No Windows, instale **JDK 17 ou superior**, **Git** e **Apache Maven**. Deixe `java`, `javac`, `git` e `mvn` disponíveis no PATH. O VS Code é opcional para mostrar os arquivos; os comandos rodam no PowerShell.
+No Windows, instale **JDK 17 ou superior** e **Git**. Deixe `java`, `javac` e `git` disponíveis no PATH. O **Maven Wrapper oficial** baixa e usa o Maven 3.9.11 automaticamente; não é necessário instalar o Maven nem configurar `mvn` no PATH. A primeira execução precisa de internet. O VS Code é opcional para mostrar os arquivos; os comandos rodam no PowerShell.
 
 ```powershell
 git clone https://github.com/alencarleandro/BancadaMaven.git
@@ -13,7 +13,18 @@ cd BancadaMaven
 .\loja-maven\maven.cmd -version
 ```
 
-Use `git clone`, pois a demonstração de SCM precisa do histórico Git. O script prepara o JDK e a URL Git apenas na sessão atual. `maven.cmd` chama o Maven instalado; ele não é o Maven Wrapper oficial e não baixa o Maven. Também aceita `MAVEN_HOME` para apontar a uma instalação existente.
+Use `git clone`, pois a demonstração de SCM precisa do histórico Git. O script prepara o JDK e a URL Git apenas na sessão atual. `maven.cmd` mantém os comandos do roteiro e delega para `mvnw.cmd`, o Maven Wrapper oficial incluído no projeto. O Maven baixado fica no cache do usuário e é reutilizado nas próximas execuções.
+
+Se você já clonou uma versão anterior e recebeu **Maven nao encontrado**, volte à pasta raiz `BancadaMaven` e execute:
+
+```powershell
+git pull --ff-only
+. .\loja-maven\preparar-terminal.ps1
+.\loja-maven\maven.cmd -version
+.\testar-bancada.ps1
+```
+
+Faça essa preparação com internet. Só use `-Offline` depois que o Maven, os plugins e as dependências já estiverem baixados.
 
 ## Ensaiar antes da aula
 
@@ -120,12 +131,15 @@ BancadaMaven/
   loja-maven/
     pom.xml                    dependências e plugins com versões fixadas
     preparar-terminal.ps1      JDK e URL Git local na sessão atual
-    maven.cmd                  chamada ao Maven instalado
+    maven.cmd                  compatibilidade com os comandos do roteiro
+    mvnw.cmd                   Maven Wrapper oficial para Windows
+    mvnw                       Maven Wrapper oficial para Linux/macOS
+    .mvn/wrapper/              versão e URL da distribuição do Maven
     src/main/java/             aplicação e classe Pedido
     src/test/java/             sete testes JUnit
 ```
 
-`target`, `oficina`, logs e caches não são versionados. As versões fixadas no POM reproduzem a demonstração; não indicam as versões mais recentes. O repositório contém fontes, sem distribuição do Maven ou cache de dependências.
+`target`, `oficina`, logs e caches não são versionados. As versões fixadas reproduzem a demonstração; não indicam as versões mais recentes. O repositório contém fontes e scripts do Wrapper; a distribuição do Maven e as dependências são baixadas na preparação.
 
 ## Referências
 

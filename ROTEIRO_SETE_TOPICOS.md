@@ -2,7 +2,7 @@
 
 ## Preparação antes da aula
 
-Clone este repositório. É necessário ter JDK 17 ou superior, Git e Apache Maven no PATH. Execute primeiro o ensaio explicado no README para baixar as dependências; depois os comandos com -o funcionam offline.
+Clone este repositório. É necessário ter JDK 17 ou superior e Git no PATH. O Maven Wrapper oficial baixa e usa o Maven automaticamente, sem exigir mvn no PATH. Execute primeiro o ensaio explicado no README com internet para preparar o Maven e as dependências; depois os comandos com -o funcionam offline.
 Abra o PowerShell na pasta BancadaMaven. Antes da aula, prepare o terminal e limpe a saída. Mantenha o pom.xml aberto no editor.
 
 ```powershell
